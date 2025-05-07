@@ -1,0 +1,6 @@
+/tests/build/
+/tests/.gradle/
+/.idea/
+/.vscode/
+*.log
+*.iml

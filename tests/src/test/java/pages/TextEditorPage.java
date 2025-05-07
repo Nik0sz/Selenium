@@ -10,21 +10,21 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 public class TextEditorPage extends BasePage {
 
     private final By iframe = By.cssSelector("iframe[id='mce_0_ifr']");
-    private final By body   = By.id("tinymce");
 
     public TextEditorPage(WebDriver driver) {
         super(driver);
         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(iframe));
+        driver.switchTo().defaultContent();
     }
 
     public void typeText(String text) {
-        WebElement editable = waitAndReturnElement(body);
         ((JavascriptExecutor) driver)
-                .executeScript("arguments[0].innerHTML = arguments[1];",
-                               editable, text);
+            .executeScript("tinymce.activeEditor.setContent(arguments[0]);", text);
     }
 
     public String readText() {
-        return waitAndReturnElement(body).getText();
+        return (String) ((JavascriptExecutor) driver)
+            .executeScript(
+                "return tinymce.activeEditor.getContent({format:'text'});");
     }
 }
